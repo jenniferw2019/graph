@@ -8,7 +8,7 @@ using namespace std;
 
 struct vertex
 {
-  char* label[20];
+  char label[20];
   int location;
 };
 
@@ -37,6 +37,8 @@ class adjacentTable
   adjacentTable();
   ~adjacentTable();
   int searchEmpty();
+  void insert(char* newlabel);
+  void print();
 
   
  private:
