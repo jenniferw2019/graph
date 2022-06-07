@@ -37,8 +37,11 @@ class adjacentTable
   adjacentTable();
   ~adjacentTable();
   int searchEmpty();
-  void insert(char* newlabel);
+  void insertV(char* newlabel);
   void print();
+  void insertE(char*  newStart, char* newEnd, int newWeight);
+  int findLocation(char* nlabel);
+  void deleteE(char* delStart, char* delEnd);
 
   
  private:
