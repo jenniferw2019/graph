@@ -133,3 +133,59 @@ void adjacentTable::deleteE(char* delStart, char* delEnd)
     }
   
 }
+
+void adjacentTable::deleteV(char* delStartv)
+{
+  int delp;
+  delp = findLocation(delStartv);
+  edgenode* previous = table[delp].listhead;
+  edgenode* current = table[delp].listhead;
+
+  //delete every edge with the delStartv as start vertex
+  if (strcmp(table[delp].listhead->edata.start.label, delStartv) == 0)
+    {
+      while (table[delp].listhead != NULL)
+	{
+	  edgenode* temp = table[delp].listhead;
+	  table[delp].listhead = table[delp].listhead->next;
+	  delete temp;
+	}
+      table[delp].vdata.location = -1;
+      strcpy(table[delp].vdata.label, "");
+    }
+
+  //delete every edge with the delStartv as the end vertex
+  for (int i = 0; i < 20; i++)
+    {
+      if (table[i].vdata.location != -1)
+	{
+	  if (table[i].listhead != NULL)
+	    {
+	      edgenode* previous = table[i].listhead;
+	      edgenode* current = table[i].listhead;
+	      if (strcmp(table[i].listhead->edata.end.label, delStartv) == 0)
+		{
+		  edgenode* temp = table[i].listhead;
+		  table[i].listhead = table[i].listhead->next;
+		  delete temp;
+		}
+		else
+		  {
+		    current = current->next;
+		    while (current != NULL)
+		      {
+			if (strcmp(current->edata.end.label, delStartv) == 0)
+			  {
+			    edgenode* temp = current;
+			    previous->next = current->next;
+			    delete temp;
+			    return;
+			  }
+			previous = current;
+			current = current->next;
+		      }
+		  }
+	    }
+	}
+    }
+}

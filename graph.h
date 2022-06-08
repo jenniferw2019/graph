@@ -42,6 +42,7 @@ class adjacentTable
   void insertE(char*  newStart, char* newEnd, int newWeight);
   int findLocation(char* nlabel);
   void deleteE(char* delStart, char* delEnd);
+  void deleteV(char* delStartv);
 
   
  private:

@@ -60,6 +60,15 @@ int main()
 
 	  myGraph.deleteE(startdel, enddel);
 	}
+      else if (strcmp(input, "DELETE_V") == 0)
+	{
+	  char startdelv[30];
+	  cout << "Type vertex to delete" << endl;
+	  cin.get(startdelv, 30);
+	  cin.get();
+
+	  myGraph.deleteV(startdelv);
+	}
     }
   
 }
