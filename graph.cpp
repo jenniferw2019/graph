@@ -1,10 +1,14 @@
+//.cpp for graph
 #include <iostream>
 #include <cstring>
 #include <cctype>
+#include <climits>
+#include <stack>
 #include "graph.h"
 
 using namespace std;
 
+//build table
 adjacentTable::adjacentTable ()
 {
   for (int i = 0; i < 20; i++)
@@ -17,6 +21,7 @@ adjacentTable::adjacentTable ()
 
 adjacentTable::~adjacentTable() {}
 
+//search if table is empty
 int adjacentTable::searchEmpty()
 {
   for (int i = 0; i < 20; i++)
@@ -29,6 +34,7 @@ int adjacentTable::searchEmpty()
   return -1;
 }
 
+//insert vertex
 void adjacentTable::insertV(char* newlabel)
 {
   int place;
@@ -41,6 +47,7 @@ void adjacentTable::insertV(char* newlabel)
     }
 }
 
+//print table
 void adjacentTable::print()
 {
   for (int i = 0; i < 20; i++)
@@ -59,9 +66,12 @@ void adjacentTable::print()
     }
 }
 
+//insert edge
 void adjacentTable::insertE(char* newStart, char* newEnd, int newWeight)
 {
   edge temp;
+  temp.start.location = findLocation(newStart);
+  temp.end.location = findLocation(newEnd);
   strcpy(temp.start.label, newStart);
   strcpy(temp.end.label, newEnd);
   temp.weight = newWeight;
@@ -79,7 +89,6 @@ void adjacentTable::insertE(char* newStart, char* newEnd, int newWeight)
     }
   else
     {
-      cout << "line 82" << endl;
       edgenode* temph = table[svalue].listhead;
       table[svalue].listhead = newNode;
       table[svalue].listhead->next = temph;
@@ -87,6 +96,7 @@ void adjacentTable::insertE(char* newStart, char* newEnd, int newWeight)
 
 }
 
+//find location of a vertex
 int adjacentTable::findLocation(char* nlabel)
 {
 
@@ -101,6 +111,7 @@ int adjacentTable::findLocation(char* nlabel)
   
 }
 
+//delete edge
 void adjacentTable::deleteE(char* delStart, char* delEnd)
 {
   
@@ -134,6 +145,7 @@ void adjacentTable::deleteE(char* delStart, char* delEnd)
   
 }
 
+//delete vertex
 void adjacentTable::deleteV(char* delStartv)
 {
   int delp;
@@ -188,4 +200,78 @@ void adjacentTable::deleteV(char* delStartv)
 	    }
 	}
     }
+}
+
+//find location of vertex with smallest pathvalue
+int adjacentTable::smallest()
+{
+  int smallest = INT_MAX;
+  int slocation;
+  
+  for (int i = 0; i < 20; i++)
+    {
+      if (table[i].vdata.location != -1)
+	{
+	  if (table[i].vdata.pathvalue <= smallest && table[i].vdata.visited == false)
+	    {
+	      smallest = table[i].vdata.pathvalue;
+	      slocation = i;
+	    }
+	}
+    }
+  return slocation;  
+}
+
+//find shortest path
+void adjacentTable::shortestPath(char* sStart, char* sEnd)
+{
+
+  for (int i = 0; i < 20; i++)
+    {
+      if (table[i].vdata.location != -1)
+	{
+	  table[i].vdata.visited = false;
+	  table[i].vdata.pathvalue = INT_MAX;
+	  table[i].vdata.prelocation = -1;
+	}
+    }
+
+  int curlocation = findLocation(sStart);
+  table[curlocation].vdata.pathvalue = 0;
+  
+  while (curlocation != findLocation(sEnd))
+    {
+      edgenode* curedge = table[curlocation].listhead;
+      while (curedge != NULL)
+	{
+	  int templocation = curedge->edata.end.location;
+	  int tempvalue = curedge->edata.weight + table[curlocation].vdata.pathvalue;
+	  if (tempvalue < table[templocation].vdata.pathvalue)
+	    {
+	      table[templocation].vdata.pathvalue = tempvalue;
+	      table[templocation].vdata.prelocation = curlocation;
+	    }
+	  curedge = curedge->next;
+	}
+      
+      curlocation = smallest();
+      table[curlocation].vdata.visited = true;
+    }
+
+  cout << "the shortest pathvalue is: " << table[curlocation].vdata.pathvalue << endl;
+
+  stack<char*> output;
+  while (curlocation != findLocation(sStart))
+    {
+      output.push(table[curlocation].vdata.label);
+      curlocation = table[curlocation].vdata.prelocation;
+    }
+  output.push(table[curlocation].vdata.label);
+
+  while (!output.empty())
+    {
+      cout << output.top() << " ";
+      output.pop();
+    }
+  cout << endl;
 }

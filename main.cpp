@@ -1,3 +1,9 @@
+/*
+This program creates a graph. User can enter vertex and edge, delete vertex and edge.
+User can also find the shortest path between two vertex.
+Author: Jennifer Wang
+6/8/22
+ */
 #include <iostream>
 #include <cstring>
 #include <cctype>
@@ -13,10 +19,11 @@ int main()
 
   while (runProgram == true)
     {
-      cout << "Type ADDV, ADDE, PRINT, DELETE_E" << endl;
+      cout << "Type ADDV, ADDE, PRINT, DELETE_E, DELETE_V, SHORTEST" << endl;
       cin.get(input, 10);
       cin.get();
 
+      //add vertex
       if (strcmp(input, "ADDV") == 0)
 	{
 	  char nlabel[30];
@@ -26,10 +33,12 @@ int main()
 
 	  myGraph.insertV(nlabel);
 	}
+      //print table
       else if (strcmp(input, "PRINT") == 0)
 	{
 	  myGraph.print();
 	}
+      //add edge
       else if (strcmp(input, "ADDE") == 0)
 	{
 	  char nstart[30];
@@ -47,6 +56,7 @@ int main()
 
 	  myGraph.insertE(nstart, nend, nweight);
 	}
+      //delete edge
       else if (strcmp(input, "DELETE_E") == 0)
 	{
 	  char startdel[30];
@@ -60,6 +70,7 @@ int main()
 
 	  myGraph.deleteE(startdel, enddel);
 	}
+      //delete vertex
       else if (strcmp(input, "DELETE_V") == 0)
 	{
 	  char startdelv[30];
@@ -68,6 +79,20 @@ int main()
 	  cin.get();
 
 	  myGraph.deleteV(startdelv);
+	}
+      //find shortest path
+      else if (strcmp(input, "SHORTEST") == 0)
+	{
+	  char s[30];
+	  char e[30];
+	  cout << "Type start location" << endl;
+	  cin.get(s, 30);
+	  cin.get();
+	  cout << "Type end location" << endl;
+	  cin.get(e, 30);
+	  cin.get();
+
+	  myGraph.shortestPath(s, e);
 	}
     }
   

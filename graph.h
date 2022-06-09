@@ -1,3 +1,4 @@
+//.h for graph
 #ifndef GRAPH_H
 #define GRAPH_H
 #include <iostream>
@@ -10,6 +11,9 @@ struct vertex
 {
   char label[20];
   int location;
+  bool visited;
+  int pathvalue;
+  int prelocation;
 };
 
 struct edge
@@ -33,6 +37,7 @@ struct adjacent
 
 class adjacentTable
 {
+  //function prototype
  public:
   adjacentTable();
   ~adjacentTable();
@@ -43,6 +48,8 @@ class adjacentTable
   int findLocation(char* nlabel);
   void deleteE(char* delStart, char* delEnd);
   void deleteV(char* delStartv);
+  int smallest();
+  void shortestPath(char* sStart, char* sEnd);
 
   
  private:
