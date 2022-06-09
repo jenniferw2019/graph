@@ -19,7 +19,7 @@ int main()
 
   while (runProgram == true)
     {
-      cout << "Type ADDV, ADDE, PRINT, DELETE_E, DELETE_V, SHORTEST" << endl;
+      cout << "Type ADDV, ADDE, PRINT, DELETE_E, DELETE_V, SHORTEST, QUIT" << endl;
       cin.get(input, 10);
       cin.get();
 
@@ -27,7 +27,7 @@ int main()
       if (strcmp(input, "ADDV") == 0)
 	{
 	  char nlabel[30];
-	  cout << "Type label" << endl;
+	  cout << "Type vertex label" << endl;
 	  cin.get(nlabel, 30);
 	  cin.get();
 
@@ -50,7 +50,7 @@ int main()
 	  cout << "Type end vertex" << endl;
 	  cin.get(nend, 30);
 	  cin.get();
-	  cout << "Type weight" << endl;
+	  cout << "Type a integer value weight" << endl;
 	  cin >> nweight;
 	  cin.get();
 
@@ -93,6 +93,11 @@ int main()
 	  cin.get();
 
 	  myGraph.shortestPath(s, e);
+	}
+      //quit
+      else if(strcmp(input, "QUIT") == 0)
+	{
+	  runProgram = false;
 	}
     }
   

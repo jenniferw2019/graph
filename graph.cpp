@@ -58,7 +58,8 @@ void adjacentTable::print()
 	  edgenode* current = table[i].listhead;
 	  while (current != NULL)
 	    {
-	      cout << current->edata.end.label << " ";
+	      cout << current->edata.end.label << "(";
+	      cout << current->edata.weight << ") ";
 	      current = current->next;
 	    }
 	  cout << endl;
@@ -114,11 +115,23 @@ int adjacentTable::findLocation(char* nlabel)
 //delete edge
 void adjacentTable::deleteE(char* delStart, char* delEnd)
 {
+  if(findLocation(delStart) == -1 || findLocation(delEnd) == -1)
+    {
+      cout << "not a valid edge" << endl;
+      return;
+    }
   
   int delplace;
   delplace = findLocation(delStart);
   edgenode* previous = table[delplace].listhead;
   edgenode* current = table[delplace].listhead;
+
+  if(table[delplace].listhead == NULL)
+    {
+      cout << "edge not exists." << endl;
+      return;
+    }
+  
   if (strcmp(table[delplace].listhead->edata.end.label, delEnd) == 0)
     {
       edgenode* temp = table[delplace].listhead;
@@ -148,6 +161,12 @@ void adjacentTable::deleteE(char* delStart, char* delEnd)
 //delete vertex
 void adjacentTable::deleteV(char* delStartv)
 {
+  if(findLocation(delStartv) == -1)
+    {
+      cout << "not a valid vertex" << endl;
+      return;
+    }
+  
   int delp;
   delp = findLocation(delStartv);
   edgenode* previous = table[delp].listhead;
@@ -258,8 +277,15 @@ void adjacentTable::shortestPath(char* sStart, char* sEnd)
       table[curlocation].vdata.visited = true;
     }
 
-  cout << "the shortest pathvalue is: " << table[curlocation].vdata.pathvalue << endl;
+  //check if there is a path exists
+  if(table[curlocation].vdata.pathvalue == INT_MAX)
+    {
+      cout << "no path exists!!" << endl;
+      return;
+    }
 
+  //there is a shortest path, output its information
+  cout << "the shortest pathvalue is: " << table[curlocation].vdata.pathvalue << endl;
   stack<char*> output;
   while (curlocation != findLocation(sStart))
     {
