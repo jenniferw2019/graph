@@ -70,6 +70,12 @@ void adjacentTable::print()
 //insert edge
 void adjacentTable::insertE(char* newStart, char* newEnd, int newWeight)
 {
+  if(findLocation(newStart) == -1 || findLocation(newEnd) == -1)
+    {
+      cout << "not valid vertices" << endl;
+      return;
+    }
+  
   edge temp;
   temp.start.location = findLocation(newStart);
   temp.end.location = findLocation(newEnd);
@@ -244,7 +250,12 @@ int adjacentTable::smallest()
 //find shortest path
 void adjacentTable::shortestPath(char* sStart, char* sEnd)
 {
-
+  if(findLocation(sStart) == -1 || findLocation(sEnd) == -1)
+    {
+      cout << "no path exists" << endl;
+      return;
+    }
+  
   for (int i = 0; i < 20; i++)
     {
       if (table[i].vdata.location != -1)
